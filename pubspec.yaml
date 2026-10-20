@@ -1,0 +1,38 @@
+name: piramid_game
+description: "PiramidGame IFPR-Pgua - Ranking de Popularidade (Flutter + Firebase Authentication + Firestore)"
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # Firebase (autenticação e banco de dados remoto)
+  firebase_core: ^4.0.0
+  firebase_auth: ^6.0.0
+  cloud_firestore: ^6.0.0
+
+  # Armazenamento local AUXILIAR (tema, cache simples da sessão)
+  shared_preferences: ^2.5.3
+
+  # Navegação, estado e injeção de dependências
+  go_router: ^17.1.0
+  signals_flutter: ^6.3.0
+  auto_injector: ^2.1.1
+
+  # Utilitários
+  equatable: ^2.0.8
+  intl: ^0.20.2
+  google_fonts: ^8.0.1
+  cupertino_icons: ^1.0.8
+
+dev_dependencies:
+  flutter_lints: ^6.0.0
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true

@@ -1,0 +1,89 @@
+rules_version = '2';
+
+// Regras de segurança do Firestore do PiramidGame IFPR-Pgua.
+// Publique em: Console do Firebase > Firestore Database > Regras
+// (ou `firebase deploy --only firestore:rules`).
+//
+// Princípios (espelham as regras do aplicativo, mas valendo também no servidor):
+//  • só usuário autenticado lê ou grava qualquer coisa;
+//  • cada usuário só grava o próprio perfil em /usuarios/{uid};
+//  • só quem cadastrou uma pessoa pode alterá-la ou removê-la;
+//  • avaliação: o id é "avaliadorUid_pessoaId" (uma por usuário + pessoa),
+//    notas de 1 a 5 e nunca a própria pessoa (autoavaliação).
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function autenticado() {
+      return request.auth != null;
+    }
+
+    function notaValida(n) {
+      return n is int && n >= 1 && n <= 5;
+    }
+
+    // ── usuarios/{uid} ──────────────────────────────────────────────────────
+    match /usuarios/{uid} {
+      allow read: if autenticado();
+      allow create, update: if autenticado() && request.auth.uid == uid;
+      allow delete: if false;
+    }
+
+    // ── pessoas/{id} ────────────────────────────────────────────────────────
+    match /pessoas/{pessoaId} {
+      allow read: if autenticado();
+
+      allow create: if autenticado()
+        && request.resource.data.criadoPor == request.auth.uid
+        && (request.resource.data.usuarioUid == null
+            || request.resource.data.usuarioUid == request.auth.uid)
+        && request.resource.data.turma is int
+        && request.resource.data.turma >= 1998
+        && request.resource.data.turma <= 2026;
+
+      allow update: if autenticado()
+        && resource.data.criadoPor == request.auth.uid
+        && request.resource.data.criadoPor == resource.data.criadoPor
+        && (request.resource.data.usuarioUid == null
+            || request.resource.data.usuarioUid == request.auth.uid);
+
+      allow delete: if autenticado()
+        && resource.data.criadoPor == request.auth.uid;
+    }
+
+    // ── avaliacoes/{avaliadorUid_pessoaId} ──────────────────────────────────
+    match /avaliacoes/{avaliacaoId} {
+      allow read: if autenticado();
+
+      allow create, update: if autenticado()
+        && request.resource.data.avaliadorUid == request.auth.uid
+        && avaliacaoId == request.auth.uid + '_' + request.resource.data.pessoaId
+        // autoavaliação proibida: a pessoa não pode estar vinculada ao avaliador
+        && get(/databases/$(database)/documents/pessoas/$(request.resource.data.pessoaId))
+             .data.get('usuarioUid', null) != request.auth.uid
+        && notaValida(request.resource.data.resenha)
+        && notaValida(request.resource.data.presencaVip)
+        && notaValida(request.resource.data.aura)
+        && notaValida(request.resource.data.modoParceiro)
+        && notaValida(request.resource.data.carismaNatural)
+        && notaValida(request.resource.data.humorDeMilhoes)
+        && notaValida(request.resource.data.energiaDeGrupo)
+        && notaValida(request.resource.data.criatividadeCaotica)
+        && notaValida(request.resource.data.modoAtleta)
+        && notaValida(request.resource.data.talentoDePalco)
+        && notaValida(request.resource.data.dripEscolar)
+        && notaValida(request.resource.data.coracaoDeDorama)
+        && notaValida(request.resource.data.queridinhoProfessores)
+        && notaValida(request.resource.data.cerebroTurbo)
+        && notaValida(request.resource.data.caosControlado)
+        && request.resource.data.pontuacaoTotal >= 15
+        && request.resource.data.pontuacaoTotal <= 75;
+
+      // O próprio avaliador pode apagar a sua avaliação; o dono da pessoa
+      // também pode (ao remover a pessoa, as avaliações dela são apagadas).
+      allow delete: if autenticado()
+        && (resource.data.avaliadorUid == request.auth.uid
+            || get(/databases/$(database)/documents/pessoas/$(resource.data.pessoaId))
+                 .data.criadoPor == request.auth.uid);
+    }
+  }
+}

@@ -14,8 +14,8 @@ import 'presentation/views/firebase_nao_configurado_view.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // 1. Firebase (Authentication + Firestore). Se ainda não foi configurado com
-  //    `flutterfire configure`, mostramos uma tela explicando em vez de quebrar.
+  // 1. Firebase (Authentication + Firestore). Se não conseguir iniciar,
+  //    mostramos uma tela explicando em vez de quebrar.
   final erroFirebase = await _iniciarFirebase();
   if (erroFirebase != null) {
     runApp(MaterialApp(
@@ -43,10 +43,6 @@ Future<void> main() async {
 /// Devolve null quando o Firebase iniciou, ou o motivo da falha.
 Future<String?> _iniciarFirebase() async {
   try {
-    if (DefaultFirebaseOptions.naoConfigurado) {
-      return 'O arquivo lib/firebase_options.dart ainda é o modelo. '
-          'Rode o FlutterFire CLI para gerar as chaves do seu projeto.';
-    }
     await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
     return null;
   } catch (e) {

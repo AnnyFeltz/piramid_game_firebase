@@ -1,4 +1,4 @@
-package com.example.injustice_app
+package com.annyfeltz.piramidgamefirebase
 
 import io.flutter.embedding.android.FlutterActivity
 

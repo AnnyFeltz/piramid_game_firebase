@@ -4,9 +4,6 @@ import '../../domain/models/avaliacao.dart';
 import '../../domain/models/criterios_popularidade.dart';
 import 'pessoa_mapper.dart';
 
-/// Converte [Avaliacao] <-> documento da coleção `avaliacoes` do Firestore.
-/// As 15 notas ficam como campos do próprio documento (estrutura sugerida
-/// na especificação), junto de `pontuacaoTotal` e `dataAvaliacao`.
 class AvaliacaoMapper {
   AvaliacaoMapper._();
 

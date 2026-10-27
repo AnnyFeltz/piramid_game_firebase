@@ -4,11 +4,9 @@ import '../../core/failure/failure.dart';
 import '../../core/patterns/result.dart';
 import 'firestore_service_interface.dart';
 
-/// Implementação de [IFirestoreService] com `cloud_firestore`.
 final class FirestoreService implements IFirestoreService {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
-  /// Limite de operações por batch do Firestore é 500; usamos folga.
   static const int _tamanhoLote = 400;
 
   @override

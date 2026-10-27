@@ -2,8 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../../domain/models/pessoa.dart';
 
-/// Converte [Pessoa] <-> documento da coleção `pessoas` do Firestore.
-/// O id da pessoa é o id do documento (não é repetido dentro dele).
 class PessoaMapper {
   PessoaMapper._();
 
@@ -28,7 +26,6 @@ class PessoaMapper {
         usuarioUid: map['usuarioUid'] as String?,
       );
 
-  /// Lê datas vindas do Firestore (Timestamp) com tolerância a outros formatos.
   static DateTime toDateTime(Object? valor) {
     if (valor is Timestamp) return valor.toDate();
     if (valor is DateTime) return valor;

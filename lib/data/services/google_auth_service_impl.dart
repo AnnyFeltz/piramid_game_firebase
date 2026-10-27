@@ -9,11 +9,6 @@ import '../mappers/usuario_mapper.dart';
 import 'auth_error_translator.dart';
 import 'google_auth_service_interface.dart';
 
-/// Login com Google integrado ao Firebase Authentication.
-///
-/// Usa o próprio provedor Google do `firebase_auth`: popup na web e fluxo
-/// nativo (`signInWithProvider`) no Android/iOS. O usuário resultante é um
-/// usuário do Firebase Authentication, igual ao do login por e-mail e senha.
 final class GoogleAuthService implements IGoogleAuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 

@@ -1,5 +1,3 @@
-/// Traduz os códigos de erro do Firebase Authentication para mensagens
-/// amigáveis em português (erros de autenticação são "informados ao usuário").
 class AuthErrorTranslator {
   AuthErrorTranslator._();
 

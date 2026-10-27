@@ -1,15 +1,12 @@
 rules_version = '2';
 
-// Regras de segurança do Firestore do PiramidGame IFPR-Pgua.
-// Publique em: Console do Firebase > Firestore Database > Regras
-// (ou `firebase deploy --only firestore:rules`).
-//
-// Princípios (espelham as regras do aplicativo, mas valendo também no servidor):
+// Regras de segurança do Firestore do PiramidGame IFPR-Pgua:
 //  • só usuário autenticado lê ou grava qualquer coisa;
 //  • cada usuário só grava o próprio perfil em /usuarios/{uid};
 //  • só quem cadastrou uma pessoa pode alterá-la ou removê-la;
 //  • avaliação: o id é "avaliadorUid_pessoaId" (uma por usuário + pessoa),
 //    notas de 1 a 5 e nunca a própria pessoa (autoavaliação).
+
 service cloud.firestore {
   match /databases/{database}/documents {
 

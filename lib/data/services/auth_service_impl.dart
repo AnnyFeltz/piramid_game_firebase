@@ -8,7 +8,6 @@ import '../mappers/usuario_mapper.dart';
 import 'auth_error_translator.dart';
 import 'auth_service_interface.dart';
 
-/// Implementação de [IAuthService] com Firebase Authentication.
 final class AuthService implements IAuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -49,8 +48,6 @@ final class AuthService implements IAuthService {
   @override
   Future<UsuarioResult> verificarAutenticacao() async {
     try {
-      // O primeiro evento de authStateChanges já traz a sessão restaurada
-      // (ou null, se ninguém estiver autenticado).
       final user = await _auth.authStateChanges().first;
       return _toResult(user);
     } catch (e) {

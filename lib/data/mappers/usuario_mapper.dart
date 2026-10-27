@@ -5,7 +5,6 @@ import '../../domain/models/usuario.dart';
 class UsuarioMapper {
   UsuarioMapper._();
 
-  /// Converte o `User` do Firebase na entidade [Usuario] do domínio.
   static Usuario fromFirebase(User user) {
     final email = user.email ?? '';
     final nomeBase = (user.displayName ?? '').trim();
@@ -25,7 +24,6 @@ class UsuarioMapper {
     );
   }
 
-  /// Documento `usuarios/{uid}` do Firestore.
   static Map<String, dynamic> toMap(Usuario usuario) => {
         'nome': usuario.nome,
         'email': usuario.email,

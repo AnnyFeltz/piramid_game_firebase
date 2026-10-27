@@ -1,5 +1,3 @@
-/// Armazenamento local simples (SharedPreferences): preferências e cache.
-/// NÃO guarda pessoas, avaliações, rankings nem senhas.
 abstract interface class ILocalStorageService {
   bool? lerBool(String chave);
   Future<bool> salvarBool(String chave, bool valor);
